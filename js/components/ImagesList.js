@@ -62,7 +62,7 @@ const ImagesList = () => {
         fetchColors()
     }, [])
 
-    console.log(colors.colorOne.value, '#062575')
+    //console.log(colors.colorOne.value, '#062575')
     return (
         <View  style={style.mainViewStyle}>
             <ScrollView>

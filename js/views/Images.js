@@ -15,7 +15,7 @@ import { Actionsheet, Divider, Icon } from 'native-base'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { pickImages } from '../actions/actions'
 import { useDispatch, useSelector } from 'react-redux'
-import { assignImageURL, assignVideoURL, createFoldersDirectories, showAllImages, showImageFolderDir, showVideoFolderDir } from '../../store/features/handleFolderSlice'
+import { assignImageURL, assignVideoURL, copyPhotoToFolder, createFoldersDirectories, readImagesFromFolder, showAllImages, showImageFolderDir, showVideoFolderDir } from '../../store/features/handleFolderSlice'
 
 const Images = ({ imgUrl }) => {
   const [showFilesActions, setShowFilesActions] = useState(false);
@@ -24,12 +24,15 @@ const Images = ({ imgUrl }) => {
   const videDir = useSelector(showVideoFolderDir)
   const imageDir = useSelector(showImageFolderDir)
   const imageList = useSelector(showAllImages)
+  const [allImagesPath, setAllImagesPath] = useState([])
 
   const handleOpenImageSheet = async () =>{
    
     const imagesData = await pickImages()
 
-    console.log(imagesData)
+    const newPath = `${imageDir[0]}/${imagesData[0].name}`
+    //console.log(imagesData[0].path)
+    dispatch(copyPhotoToFolder({ src: imagesData[0].path, dest: newPath }))
   }
 
   const createDirectories = () =>{
@@ -47,6 +50,8 @@ const Images = ({ imgUrl }) => {
   }
 
   const testLoadImages = () => {
+    const paths = dispatch(readImagesFromFolder())
+    //setAllImagesPath(paths)
     console.log(imageList)
   }
 

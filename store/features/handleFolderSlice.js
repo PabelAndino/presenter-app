@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { createFolder, readFolders, readImageFolders, readVideoFolders } from "../../js/lib/files/fileActions"
+import { copyFiles, createFolder, readFolder, readFolders, readImageFolders, readVideoFolders } from "../../js/lib/files/fileActions"
 
 /* To get the file list we must have the Folders url first */
 const initialState = {
@@ -31,6 +31,10 @@ export const folderHandleSlice = createSlice({
                     state.videoFolderDir = action.payload
                 }
             })
+            .addCase(readImagesFromFolder.fulfilled,(state,action)=>{
+                state.imagesList = action.payload
+            })
+           
     }
 })
 
@@ -81,11 +85,28 @@ export const copyPhotoToFolder = createAsyncThunk('copyPhotoToFolder',
     async (data) =>{
         const {src, dest} = data
         try {
-            
+          
+          //const [{path}] = src
+          return await copyFiles(src, dest)
+          //console.log(dest)
         } catch (error) {
             console.log(error)
         }
     }
+)
 
+export const readImagesFromFolder = createAsyncThunk('readImagesFromFolder',
+    async (data)=>{
+        try {
+            const imagesdir = await readFolder()
+            const result = imagesdir.map(({path})=>path)
+            return result
+        } catch (error) {
+            
+        }
+    }
 )
 export default folderHandleSlice.reducer
+
+
+
