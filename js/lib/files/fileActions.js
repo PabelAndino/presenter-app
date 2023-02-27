@@ -76,8 +76,8 @@ export const copyFiles = async (src, dest) => {
     }
 }
 
-export async function readFolder() {
-    const path = '/Users/pabel/Library/Developer/CoreSimulator/Devices/40C2ACDE-7454-4E2E-AB68-F6EE46077C04/data/Containers/Data/Application/F1D60F49-E78D-4F35-AA40-E59CC565CAF2/Documents/Lyricshow/images'
+export async function readFolder(path) {
+    //const path = '/Users/pabel/Library/Developer/CoreSimulator/Devices/40C2ACDE-7454-4E2E-AB68-F6EE46077C04/data/Containers/Data/Application/F1D60F49-E78D-4F35-AA40-E59CC565CAF2/Documents/Lyricshow/images'
     try {
         const result = await FS.readDir(path);
         return result

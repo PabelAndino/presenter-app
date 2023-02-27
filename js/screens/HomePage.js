@@ -17,17 +17,37 @@ import TopMenu from '../views/TopMenu'
 import LivePresentation from '../views/LivePresentation'
 import SlidesDetails from '../views/SlidesDetails'
 import BottonMenu from '../views/BottonMenu'
-
+import { useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { assignImageURL, createFoldersDirectories, readImagesFromFolder, showAllImages, showImageFolderDir } from '../../store/features/handleFolderSlice'
+import { useEffect } from 'react'
+import { useState } from 'react'
+//from '../../store/features/handleFolderSlice'
 const HomePage = () => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+  const imageDir = useSelector(showImageFolderDir)
+
+
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false })
+
   }, [])
   /* 
   bg-gradient-to-br from-gray-700 via-gray-900 to-black
   colors={['#621c75', '#391e62', '#2e1159', '#1a0834']}
   colors={['#ffffff',  '#fdfdfd']}
   */
+  useEffect(() => {
+    dispatch(assignImageURL())
+    dispatch(createFoldersDirectories())
+    if (imageDir) {
+      dispatch(readImagesFromFolder(imageDir))
+    }
+
+  }, [imageDir])
+
+
   return (
     <>
 

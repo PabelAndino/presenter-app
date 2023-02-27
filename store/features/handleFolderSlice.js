@@ -7,6 +7,7 @@ const initialState = {
     videoList: [],
     imageFolderDir: [],
     videoFolderDir: [],
+    loaded:false
 }
 
 export const folderHandleSlice = createSlice({
@@ -24,7 +25,6 @@ export const folderHandleSlice = createSlice({
                 if (action.payload !== undefined) {
                     state.imageFolderDir = action.payload
                 }
-
             })
             .addCase(assignVideoURL.fulfilled, (state, action) => {
                 if (action.payload !== undefined) {
@@ -33,6 +33,7 @@ export const folderHandleSlice = createSlice({
             })
             .addCase(readImagesFromFolder.fulfilled,(state,action)=>{
                 state.imagesList = action.payload
+                state.loaded = true
             })
            
     }
@@ -61,9 +62,16 @@ export const assignImageURL = createAsyncThunk('assignImageURL',
     async () => {
         try {
             const response = await readImageFolders()
-            return response
+            let dir = ''
+            for (let data of response){
+                if(data){
+                    dir = data
+                }
+            }
+            //console.log('assign imgUrl', dir)
+            return dir
         } catch (error) {
-            console.log(error)
+            console.log(error, ' Error assignImageURL')
         }
     }
 
@@ -96,13 +104,14 @@ export const copyPhotoToFolder = createAsyncThunk('copyPhotoToFolder',
 )
 
 export const readImagesFromFolder = createAsyncThunk('readImagesFromFolder',
-    async (data)=>{
+    async (pathData)=>{
         try {
-            const imagesdir = await readFolder()
+            const imagesdir = await readFolder(pathData)
             const result = imagesdir.map(({path})=>path)
+            console.log(`The path ${pathData} `, result[0])
             return result
         } catch (error) {
-            
+            console.log(error, ' Error readImagesFromFolder')
         }
     }
 )

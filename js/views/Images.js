@@ -50,9 +50,7 @@ const Images = ({ imgUrl }) => {
   }
 
   const testLoadImages = () => {
-    const paths = dispatch(readImagesFromFolder())
-    //setAllImagesPath(paths)
-    console.log(imageList)
+
   }
 
   return (
